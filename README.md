@@ -2,7 +2,7 @@
 # Sample Terraform VM creation for IBM Cloud
 
 Sample files to create a simple VM on IBM Cloud IaaS platform
-steve_strutt@uk.ibm.com
+chenxp@cn.ibm.com
 Licensed under the Apache License, Version 2.0 (the "License");
 
 This sample is intended for use with the following tutorial:
