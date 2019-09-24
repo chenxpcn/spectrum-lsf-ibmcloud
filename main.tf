@@ -147,3 +147,20 @@ resource "null_resource" "set_slave_hosts_file" {
   depends_on = ["ibm_compute_vm_instance.lsf-master", "ibm_compute_vm_instance.lsf-slave"]
 }
 
+resource "null_resource" "set_deployer" {
+  connection {
+    type        = "ssh"
+    user        = "root"
+    host        = "${ibm_compute_vm_instance.lsf-master.ipv4_address}"
+    private_key = "${file("~/.ssh/id_rsa")}"
+  }
+
+  provisioner "remote-exec" {
+    inline  = [
+      "wget -nv -nH -c --no-check-certificate -o $LOG_FILE -O /root/installer/deploy-lsf.sh ${var.scripts_path_uri}/deploy-lsf.sh",
+      ". /root/installer/deploy-lsf.sh"
+    ]
+  }
+
+  depends_on = ["null_resource.set_slave_hosts_file"]
+}
