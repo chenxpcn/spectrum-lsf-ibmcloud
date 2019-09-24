@@ -1,3 +1,8 @@
+locals {
+  master_ssh_key_file_name = "lsf-master-ssh-key"
+  slave_ssh_key_file_name = "lsf-slave-ssh-key"
+}
+
 resource "ibm_compute_ssh_key" "local_ssh_key" {
   label      = "local_ssh_key"
   public_key = "${file("~/.ssh/id_rsa.pub")}"
@@ -5,13 +10,13 @@ resource "ibm_compute_ssh_key" "local_ssh_key" {
 
 resource "null_resource" "create_master_ssh_key" {
   provisioner "local-exec" {
-    command = "if [ ! -f '${var.master_ssh_key_file}' ]; then ssh-keygen  -f ${var.master_ssh_key_file} -N ''; fi"
+    command = "if [ ! -f '${local.master_ssh_key_file_name}' ]; then ssh-keygen  -f ${local.master_ssh_key_file_name} -N ''; fi"
   }
 }
 
 resource "null_resource" "create_slave_ssh_key" {
   provisioner "local-exec" {
-    command = "if [ ! -f '${var.slave_ssh_key_file}' ]; then ssh-keygen  -f ${var.slave_ssh_key_file} -N ''; fi"
+    command = "if [ ! -f '${local.slave_ssh_key_file_name}' ]; then ssh-keygen  -f ${local.slave_ssh_key_file_name} -N ''; fi"
   }
 }
 
@@ -24,17 +29,17 @@ resource "null_resource" "copy_master_private_key" {
   }
 
   provisioner "file" {
-    source      = "${var.master_ssh_key_file}"
+    source      = "${local.master_ssh_key_file_name}"
     destination = "/root/.ssh/id_rsa"
   }
 
   provisioner "file" {
-    source      = "${var.master_ssh_key_file}.pub"
+    source      = "${local.master_ssh_key_file_name}.pub"
     destination = "/root/.ssh/id_rsa.pub"
   }
 
   provisioner "file" {
-    source      = "${var.slave_ssh_key_file}.pub"
+    source      = "${local.slave_ssh_key_file_name}.pub"
     destination = "/root/.ssh/slave.pub"
   }
 
@@ -60,17 +65,17 @@ resource "null_resource" "copy_slave_private_key" {
   }
 
   provisioner "file" {
-    source      = "${var.slave_ssh_key_file}"
+    source      = "${local.slave_ssh_key_file_name}"
     destination = "/root/.ssh/id_rsa"
   }
 
   provisioner "file" {
-    source      = "${var.slave_ssh_key_file}.pub"
+    source      = "${local.slave_ssh_key_file_name}.pub"
     destination = "/root/.ssh/id_rsa.pub"
   }
 
   provisioner "file" {
-    source      = "${var.master_ssh_key_file}.pub"
+    source      = "${local.master_ssh_key_file_name}.pub"
     destination = "/root/.ssh/master.pub"
   }
 
@@ -102,8 +107,8 @@ resource "ibm_compute_vm_instance" "lsf-master" {
   public_vlan_id       = "${var.public_vlan_id}"
   private_vlan_id      = "${var.private_vlan_id}"
   ssh_key_ids          = ["${ibm_compute_ssh_key.local_ssh_key.id}"]
-  post_install_script_uri = "${var.post_install_script_uri_master}"
-  user_metadata        = "#!/bin/bash\nexport installer_uri=${var.installer_uri}\nexport installer_name=${var.installer_name}\nexport slave_ip=${ibm_compute_vm_instance.lsf-slave.ipv4_address_private}\nexport domain_name=${var.domain_name}\n"
+  post_install_script_uri = "${var.scripts_path_uri}/post-install-master.sh"
+  user_metadata        = "#!/bin/bash\nexport installer_uri=${var.installer_uri}\nexport slave_ip=${ibm_compute_vm_instance.lsf-slave.ipv4_address_private}\nexport domain_name=${var.domain_name}\n"
 }
 
 resource "ibm_compute_vm_instance" "lsf-slave" {
@@ -122,7 +127,7 @@ resource "ibm_compute_vm_instance" "lsf-slave" {
   public_vlan_id       = "${var.public_vlan_id}"
   private_vlan_id      = "${var.private_vlan_id}"
   ssh_key_ids          = ["${ibm_compute_ssh_key.local_ssh_key.id}"]
-  post_install_script_uri = "${var.post_install_script_uri_slave}"
+  post_install_script_uri = "${var.scripts_path_uri}/post-install-slave.sh"
 }
 
 resource "null_resource" "set_slave_hosts_file" {
@@ -141,3 +146,4 @@ resource "null_resource" "set_slave_hosts_file" {
 
   depends_on = ["ibm_compute_vm_instance.lsf-master", "ibm_compute_vm_instance.lsf-slave"]
 }
+

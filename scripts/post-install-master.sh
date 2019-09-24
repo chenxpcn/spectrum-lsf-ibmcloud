@@ -34,10 +34,10 @@ LOG "install yum-utils"
 yum -y install yum-utils >> $LOG_FILE
 
 mkdir -p /root/installer
-LOG "wget -nH -c --no-check-certificate -o $LOG_FILE -O /root/installer/${installer_name} ${installer_uri}"
-wget -nv -nH -c --no-check-certificate -o $LOG_FILE -O "/root/installer/${installer_name}" ${installer_uri}
+LOG "wget -nH -c --no-check-certificate -o $LOG_FILE -O /root/installer/lsfsent-x86_64.bin ${installer_uri}"
+wget -nv -nH -c --no-check-certificate -o $LOG_FILE -O /root/installer/lsfsent-x86_64.bin ${installer_uri}
 echo "1" > /root/installer/select_yes
-chmod 744 "/root/installer/${installer_name}"
-"/root/installer/${installer_name}" < /root/installer/select_yes
+chmod 744 /root/installer/lsfsent-x86_64.bin
+/root/installer/lsfsent-x86_64.bin < /root/installer/select_yes
 
 LOG "Complete post-install script for master node."
