@@ -3,11 +3,6 @@ resource "ibm_compute_ssh_key" "local_ssh_key" {
   public_key = "${file("~/.ssh/id_rsa.pub")}"
 }
 
-resource "ibm_compute_ssh_key" "remote_ssh_key" {
-  label      = "remote_ssh_key"
-  public_key = "${var.remote_console_public_ssh_key}"
-}
-
 resource "null_resource" "create_master_ssh_key" {
   provisioner "local-exec" {
     command = "if [ ! -f '${var.master_ssh_key_file}' ]; then ssh-keygen  -f ${var.master_ssh_key_file} -N ''; fi"
@@ -53,7 +48,7 @@ resource "null_resource" "copy_master_private_key" {
     ]
   }
 
-  depends_on = ["null_resource.create_master_ssh_key", "null_resource.create_slave_ssh_key"]
+  depends_on = ["ibm_compute_vm_instance.lsf-master", "null_resource.create_master_ssh_key", "null_resource.create_slave_ssh_key"]
 }
 
 resource "null_resource" "copy_slave_private_key" {
@@ -88,7 +83,7 @@ resource "null_resource" "copy_slave_private_key" {
     ]
   }
 
-  depends_on = ["null_resource.create_master_ssh_key", "null_resource.create_slave_ssh_key"]
+  depends_on = ["ibm_compute_vm_instance.lsf-slave", "null_resource.create_master_ssh_key", "null_resource.create_slave_ssh_key"]
 }
 
 resource "ibm_compute_vm_instance" "lsf-master" {
