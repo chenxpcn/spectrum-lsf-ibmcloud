@@ -49,6 +49,7 @@ resource "null_resource" "copy_master_private_key" {
       "chmod 644 /root/.ssh/id_rsa.pub",
       "cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys",
       "cat /root/.ssh/slave.pub >> /root/.ssh/authorized_keys",
+      "echo ${var.remote_console_public_ssh_key} >> /root/.ssh/authorized_keys"
     ]
   }
 
@@ -105,7 +106,7 @@ resource "ibm_compute_vm_instance" "lsf-master" {
   local_disk           = false
   public_vlan_id       = "${var.public_vlan_id}"
   private_vlan_id      = "${var.private_vlan_id}"
-  ssh_key_ids          = ["${ibm_compute_ssh_key.local_ssh_key.id}", "${ibm_compute_ssh_key.remote_ssh_key.id}"]
+  ssh_key_ids          = ["${ibm_compute_ssh_key.local_ssh_key.id}"]
   post_install_script_uri = "${var.post_install_script_uri_master}"
   user_metadata        = "#!/bin/bash\nexport installer_uri=${var.installer_uri}\nexport installer_name=${var.installer_name}\nexport slave_ip=${ibm_compute_vm_instance.lsf-slave.ipv4_address_private}\nexport domain_name=${var.domain_name}\n"
 }
