@@ -1,4 +1,5 @@
 #!/bin/bash
+mkdir -p /root/logs
 LOG_FILE=/root/logs/post-install-master.log
 
 function LOG()

@@ -1,5 +1,6 @@
 #!/bin/bash
 LOG_FILE=/root/logs/download-extract-deployer.log
+INSTALL_PACKAGE_URI=$1
 
 function LOG()
 {
@@ -10,8 +11,8 @@ LOG "Start to download deployer ..."
 
 mkdir -p /root/installer
 
-LOG "wget -nH -c --no-check-certificate -o $LOG_FILE -O /root/installer/lsfsent-x86_64.bin ${installer_uri}"
-wget -nv -nH -c --no-check-certificate -o $LOG_FILE -O /root/installer/lsfsent-x86_64.bin ${installer_uri}
+LOG "wget -nH -c --no-check-certificate -o $LOG_FILE -O /root/installer/lsfsent-x86_64.bin $INSTALL_PACKAGE_URI"
+wget -nv -nH -c --no-check-certificate -o $LOG_FILE -O /root/installer/lsfsent-x86_64.bin $INSTALL_PACKAGE_URI
 
 echo "1" > "/root/installer/select_yes"
 
