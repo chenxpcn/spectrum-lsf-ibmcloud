@@ -12,6 +12,9 @@ ibmcloud_api_key = ""
 # remote_console_public_ssh_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCpfjveuUdG2Rra13c2THzsIqhNohHRBsQPR4tlX+D+Bg2mXfT9+Vq9d4kXglE2+HeFIjo1UadjAdfCfBN4gRvL9DAmSJC3yS9pi4NbrAIILsvI8E33CaGt52xij/PpIOX1/TscPZgfmX/+rW6tpAE4BM5bUq09wAMmKOoM59rq8bjo9sk4wb4xq28Ztae4hCmVVR5h9iZ/hZK/0ukZeapG7XP0ZKFR71RozNoBHZ8Df4Bw163CCHMFNmQlTK8OvPHqjuZzMGFh/FCKmqorrefixAjRaNUHjflOAWVloUO9+w0tUmdMMt9+aErQ6e+b2l950FP3uEfa4Bci7bmCGj2d chenxp@chenxp-mac1.cn.ibm.com"
 remote_console_public_ssh_key = ""
 
+# (required) LSF cluster name
+cluster_name = ""
+
 # (optional) uri of scripts folder
 # scripts_path_uri = "https://raw.githubusercontent.com/chenxpcn/spectrum-lsf-ibmcloud/master/scripts"
 
