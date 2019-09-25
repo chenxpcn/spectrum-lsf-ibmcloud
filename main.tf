@@ -159,7 +159,7 @@ resource "null_resource" "set_deployer" {
     inline  = [
       "mkdir -p /root/installer",
       "wget -nv -nH -c --no-check-certificate -O /root/installer/deploy-lsf.sh ${var.scripts_path_uri}/deploy-lsf.sh",
-      ". /root/installer/deploy-lsf.sh ${var.installer_uri}"
+      ". /root/installer/deploy-lsf.sh ${var.installer_uri} ${var.cluster_name}"
     ]
   }
 

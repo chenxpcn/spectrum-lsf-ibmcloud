@@ -19,6 +19,11 @@ variable "ibmcloud_api_key" {
 
 ############################################################
 # for main.tf
+variable "cluster_name" {
+    type = "string"
+    description = "lsf cluster name"
+}
+
 variable "domain_name" {
     type = "string"
     description = "domain name"
