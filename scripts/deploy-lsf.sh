@@ -2,6 +2,7 @@
 LOG_FILE=/root/logs/deployer.log
 INSTALL_PACKAGE_URI=$1
 CLUSTER_NAME=$2
+LSFADMIN_PASSWORD=$3
 
 function LOG()
 {
@@ -53,6 +54,11 @@ then
     LOG "Found error in deploy, please check /root/logs/lsf-deploy.log"
     exit -1
 fi
+
+LOG "Set password for lsfadmin"
+echo "$LSFADMIN_PASSWORD" > /root/lsfadmin_password
+passwd lsfadmin < /root/lsfadmin_password
+rm -f /root/lsfadmin_password
 
 
 LOG "Install LSF Enterprise completed."
