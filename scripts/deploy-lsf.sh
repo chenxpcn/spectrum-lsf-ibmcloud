@@ -24,7 +24,7 @@ chmod 744 /root/installer/lsfsent-x86_64.bin
 cd /opt/ibm/lsf_installer/playbook
 
 LOG "Modify lsf-config.yml"
-sed -i 's/my_cluster_name: myCluster/my_cluster_name: ${var.cluster_name}/' lsf-config.yml
+sed -i 's/my_cluster_name: myCluster/my_cluster_name: '${CLUSTER_NAME}'/' lsf-config.yml
 
 LOG "Modify lsf-inventory"
 sed -i '/\[LSF_Servers\]/a\lsf-slave' lsf-inventory
@@ -47,6 +47,12 @@ fi
 
 LOG "Install LSF"
 ansible-playbook -i lsf-inventory lsf-deploy.yml>/root/logs/lsf-deploy.log
+result=`cat /root/logs/lsf-deploy.log|grep 'failed='|sed -n 's/^.*failed=//;p'|grep '[1-9]'`
+if [ ! -z "$result" ]
+then
+    LOG "Found error in deploy, please check /root/logs/lsf-deploy.log"
+    exit -1
+fi
 
 
 LOG "Install LSF Enterprise completed."
