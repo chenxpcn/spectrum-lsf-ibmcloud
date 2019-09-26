@@ -63,3 +63,8 @@ variable "installer_uri" {
   type = "string"
   description = "uri of LSF Enterprise Suite installer package"
 }
+
+variable "lsfadmin_password" {
+  type = "string"
+  description = "password for user lsfadmin"
+}

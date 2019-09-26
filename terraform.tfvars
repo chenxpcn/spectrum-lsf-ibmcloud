@@ -22,6 +22,9 @@ cluster_name = ""
 # installer_uri = "http://<http_server_ip>/suite/lsfsent10.2.0.8-x86_64.bin"
 installer_uri = ""
 
+# (required) password for user lsfadmin
+lsfadmin_password = ""
+
 # (optional) domain name for master node and slave node
 # domain_name = "demo.cloud"
 
