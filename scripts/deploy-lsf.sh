@@ -17,7 +17,7 @@ wget -nv -nH -c --no-check-certificate -o $LOG_FILE -O /root/installer/lsfsent-x
 
 echo "1" > "/root/installer/select_yes"
 
-LOG "Start to extract deployer ..."
+LOG "Extract deployer ..."
 chmod 744 /root/installer/lsfsent-x86_64.bin
 /root/installer/lsfsent-x86_64.bin < /root/installer/select_yes
 
@@ -49,4 +49,4 @@ LOG "Install LSF"
 ansible-playbook -i lsf-inventory lsf-deploy.yml>/root/logs/lsf-deploy.log
 
 
-LOG "All set."
+LOG "Install LSF Enterprise completed."
