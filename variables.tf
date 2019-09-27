@@ -27,25 +27,61 @@ variable "cluster_name" {
 variable "domain_name" {
     type = "string"
     description = "domain name"
-    default = "demo.cloud"
 }
 
 variable "data_center" {
     type = "string"
     description = "data center"
-    default = "dal13"
 }
 
 variable "public_vlan_id" {
     type = "string"
     description = "public vlan id for master node"
-    default = "2317207"
 }
 
 variable "private_vlan_id" {
     type = "string"
     description = "private vlan id for both master node and private node"
-    default = "2317209"
+}
+
+variable "master_cores" {
+    type = "string"
+    description = "cpu cores on master node"
+}
+
+variable "master_memory" {
+    type = "string"
+    description = "memory in MBytes on master node"
+}
+
+variable "master_disk" {
+    type = "string"
+    description = "disk size in GBytes on master node"
+}
+
+variable "master_network_speed" {
+    type = "string"
+    description = "network speed in Mbps on master node"
+}
+
+variable "slave_cores" {
+    type = "string"
+    description = "cpu cores on slave node"
+}
+
+variable "slave_memory" {
+    type = "string"
+    description = "memory in MBytes on slave node"
+}
+
+variable "slave_disk" {
+    type = "string"
+    description = "disk size in GBytes on slave node"
+}
+
+variable "slave_network_speed" {
+    type = "string"
+    description = "network speed in Mbps on slave node"
 }
 
 variable "remote_console_public_ssh_key" {
