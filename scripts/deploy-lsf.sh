@@ -57,7 +57,7 @@ fi
 
 LOG "Set password for lsfadmin"
 echo "$LSFADMIN_PASSWORD" > /root/lsfadmin_password
-LOG "$LSFADMIN_PASSWORD"
+echo "$LSFADMIN_PASSWORD" >> /root/lsfadmin_password
 passwd lsfadmin < /root/lsfadmin_password >> "$LOG_FILE"
 rm -f /root/lsfadmin_password
 
