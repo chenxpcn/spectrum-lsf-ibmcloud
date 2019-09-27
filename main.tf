@@ -127,7 +127,7 @@ resource "ibm_compute_vm_instance" "lsf-slave" {
   public_vlan_id       = "${var.public_vlan_id}"
   private_vlan_id      = "${var.private_vlan_id}"
   ssh_key_ids          = ["${ibm_compute_ssh_key.local_ssh_key.id}"]
-  post_install_script_uri = "${var.scripts_path_uri}/post-install-slave.sh"
+#  post_install_script_uri = "${var.scripts_path_uri}/post-install-slave.sh"
 }
 
 resource "null_resource" "set_slave_hosts_file" {
@@ -147,7 +147,7 @@ resource "null_resource" "set_slave_hosts_file" {
   depends_on = ["ibm_compute_vm_instance.lsf-master", "ibm_compute_vm_instance.lsf-slave"]
 }
 
-resource "null_resource" "set_deployer" {
+resource "null_resource" "install_lsf" {
   connection {
     type        = "ssh"
     user        = "root"
@@ -163,5 +163,43 @@ resource "null_resource" "set_deployer" {
     ]
   }
 
-  depends_on = ["null_resource.set_slave_hosts_file"]
+  depends_on = ["null_resource.set_slave_hosts_file", "null_resource.copy_slave_private_key", "null_resource.copy_master_private_key"]
+}
+
+resource "null_resource" "config_master" {
+  connection {
+    type        = "ssh"
+    user        = "root"
+    host        = "${ibm_compute_vm_instance.lsf-master.ipv4_address}"
+    private_key = "${file("~/.ssh/id_rsa")}"
+  }
+
+  provisioner "remote-exec" {
+    inline  = [
+      "mkdir -p /root/installer",
+      "wget -nv -nH -c --no-check-certificate -O /root/installer/config-lsf-master.sh ${var.scripts_path_uri}/config-lsf-master.sh",
+      ". /root/installer/config-lsf-master.sh"
+    ]
+  }
+
+  depends_on = ["null_resource.install_lsf"]
+}
+
+resource "null_resource" "config_slave" {
+  connection {
+    type        = "ssh"
+    user        = "root"
+    host        = "${ibm_compute_vm_instance.lsf-slave.ipv4_address}"
+    private_key = "${file("~/.ssh/id_rsa")}"
+  }
+
+  provisioner "remote-exec" {
+    inline  = [
+      "mkdir -p /root/installer",
+      "wget -nv -nH -c --no-check-certificate -O /root/installer/config-lsf-slave.sh ${var.scripts_path_uri}/config-lsf-slave.sh",
+      ". /root/installer/config-lsf-slave.sh"
+    ]
+  }
+
+  depends_on = ["null_resource.install_lsf"]
 }

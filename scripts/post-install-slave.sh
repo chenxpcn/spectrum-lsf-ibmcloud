@@ -1,5 +1,6 @@
 #!/bin/bash
-LOG_FILE=/root/post-install.log
+EGO_GETCONF=lim
+LOG_FILE=/root/logs/post-install.log
 
 function LOG()
 {

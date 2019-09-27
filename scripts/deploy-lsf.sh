@@ -20,7 +20,7 @@ echo "1" > "/root/installer/select_yes"
 
 LOG "Extract deployer ..."
 chmod 744 /root/installer/lsfsent-x86_64.bin
-/root/installer/lsfsent-x86_64.bin < /root/installer/select_yes
+/root/installer/lsfsent-x86_64.bin < /root/installer/select_yes >> "$LOG_FILE"
 
 cd /opt/ibm/lsf_installer/playbook
 
@@ -57,7 +57,8 @@ fi
 
 LOG "Set password for lsfadmin"
 echo "$LSFADMIN_PASSWORD" > /root/lsfadmin_password
-passwd lsfadmin < /root/lsfadmin_password
+LOG "$LSFADMIN_PASSWORD"
+passwd lsfadmin < /root/lsfadmin_password >> "$LOG_FILE"
 rm -f /root/lsfadmin_password
 
 
