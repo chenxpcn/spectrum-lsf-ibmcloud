@@ -52,8 +52,8 @@ fi
 
 #If there is no DNS server to resolve host names and IPs between master host and VMs, 
 #then uncomment the following part and set the correct master LSF host name and IP address 
-master_host='lsf-master2.demo.cloud'
-master_host_ip='10.73.77.7'
+master_host='lsf-master'
+master_host_ip='[MASTER-IP-ADDRESS]'
 echo ${master_host_ip} ${master_host} >> /etc/hosts
 echo $master_host > $LSF_ENVDIR/hostregsetup
 lsreghost -s $LSF_ENVDIR/hostregsetup
