@@ -74,3 +74,7 @@ slave_disk = ""
 # (required) network speed in Mbps on slave node
 # slave_network_speed = "100"
 slave_network_speed = ""
+
+# (required) image name for dynamic node, the image is come from slave node
+# image_name = "LSFDynamicNodeImage"
+image_name = ""
