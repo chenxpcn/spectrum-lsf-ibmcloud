@@ -159,6 +159,9 @@ resource "null_resource" "install_lsf" {
     inline  = [
       "mkdir -p /root/installer",
       "wget -nv -nH -c --no-check-certificate -O /root/installer/deploy-lsf.sh ${var.scripts_path_uri}/deploy-lsf.sh",
+      "wget -nv -nH -c --no-check-certificate -O /var/www/html/provisioning.sh ${var.scripts_path_uri}/provisioning.sh",
+      "wget -nv -nH -c --no-check-certificate -O /root/installer/config-lsf-master.sh ${var.scripts_path_uri}/config-lsf-master.sh",
+      "wget -nv -nH -c --no-check-certificate -O /root/installer/config-lsf-slave.sh ${var.scripts_path_uri}/config-lsf-slave.sh",
       ". /root/installer/deploy-lsf.sh ${var.installer_uri} ${var.cluster_name} ${var.lsfadmin_password}"
     ]
   }
@@ -176,9 +179,6 @@ resource "null_resource" "config_master" {
 
   provisioner "remote-exec" {
     inline  = [
-      "mkdir -p /root/installer",
-      "wget -nv -nH -c --no-check-certificate -O /var/www/html/provisioning.sh ${var.scripts_path_uri}/provisioning.sh",
-      "wget -nv -nH -c --no-check-certificate -O /root/installer/config-lsf-master.sh ${var.scripts_path_uri}/config-lsf-master.sh",
       ". /root/installer/config-lsf-master.sh ${var.cluster_name} ${var.iaas_username} ${var.ibmcloud_iaas_api_key} ${var.scripts_path_uri} ${ibm_compute_vm_instance.lsf-master.ipv4_address_private} ${var.slave_cores} ${var.slave_memory} ${var.image_name} ${var.data_center} ${var.private_vlan_number}"
     ]
   }
@@ -196,8 +196,6 @@ resource "null_resource" "config_slave" {
 
   provisioner "remote-exec" {
     inline  = [
-      "mkdir -p /root/installer",
-      "wget -nv -nH -c --no-check-certificate -O /root/installer/config-lsf-slave.sh ${var.scripts_path_uri}/config-lsf-slave.sh",
       ". /root/installer/config-lsf-slave.sh"
     ]
   }
