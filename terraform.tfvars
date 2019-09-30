@@ -43,6 +43,10 @@ public_vlan_id = ""
 # private_vlan_id = "2317209"
 private_vlan_id = ""
 
+# (required) private vlan number for both master node and private node
+# private_vlan_number = "1207"
+private_vlan_number = ""
+
 # (required) cpu cores for master node
 # master_cores = "4"
 master_cores = ""
@@ -74,3 +78,7 @@ slave_disk = ""
 # (required) network speed in Mbps on slave node
 # slave_network_speed = "100"
 slave_network_speed = ""
+
+# (required) image name for dynamic node, the image is come from slave node
+# image_name = "LSFDynamicNodeImage"
+image_name = ""
