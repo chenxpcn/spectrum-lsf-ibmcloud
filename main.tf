@@ -158,6 +158,7 @@ resource "null_resource" "install_lsf" {
   provisioner "remote-exec" {
     inline  = [
       "mkdir -p /root/installer",
+      "mkdir -p /var/www/html",
       "wget -nv -nH -c --no-check-certificate -O /root/installer/deploy-lsf.sh ${var.scripts_path_uri}/deploy-lsf.sh",
       "wget -nv -nH -c --no-check-certificate -O /var/www/html/provisioning.sh ${var.scripts_path_uri}/provisioning.sh",
       "wget -nv -nH -c --no-check-certificate -O /root/installer/config-lsf-master.sh ${var.scripts_path_uri}/config-lsf-master.sh",
