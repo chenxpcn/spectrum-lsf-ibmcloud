@@ -104,3 +104,8 @@ variable "lsfadmin_password" {
   type = "string"
   description = "password for user lsfadmin"
 }
+
+variable "image_name" {
+  type = "string"
+  type = "image name for dynamic node"
+}

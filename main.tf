@@ -178,7 +178,17 @@ resource "null_resource" "config_master" {
     inline  = [
       "mkdir -p /root/installer",
       "wget -nv -nH -c --no-check-certificate -O /root/installer/config-lsf-master.sh ${var.scripts_path_uri}/config-lsf-master.sh",
-      ". /root/installer/config-lsf-master.sh"
+      ". /root/installer/config-lsf-master.sh \
+                                ${var.cluster_name} \
+                                ${var.iaas_username} \
+                                ${var.ibmcloud_iaas_api_key} \
+                                ${var.scripts_path_uri} \
+                                ${ibm_compute_vm_instance.lsf-master.ipv4_address_private} \
+                                ${var.slave_cores} \
+                                ${var.slave_memory} \
+                                ${var.image_name} \
+                                ${var.data_center} \
+                                ${var.private_vlan_number}"
     ]
   }
 
