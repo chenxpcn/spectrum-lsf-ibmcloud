@@ -20,7 +20,7 @@ function LOG()
 LOG "Start config LSF master node ..."
 
 LOG "'$LSF_ENVDIR' is $LSF_ENVDIR"
-LOG "'$LSF_ENVDIR\' is $LSF_ENVDIR\"
+LOG "'$LSF_ENVDIR/resource_connector' is $LSF_ENVDIR/resource_connector"
 
 LOG "Set provioning.sh"
 sed -i 's/\[MASTER-IP-ADDRESS\]/'$MASTER_IP_ADDR'/' /var/www/html/provisioning.sh
