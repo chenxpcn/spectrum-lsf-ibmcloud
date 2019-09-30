@@ -75,4 +75,3 @@ badmin mbdrestart</root/installer/all_yes>>$LOG_FILE
 
 
 LOG "Complete config LSF master node."
-
