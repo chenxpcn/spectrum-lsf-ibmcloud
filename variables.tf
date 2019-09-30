@@ -20,79 +20,84 @@ variable "ibmcloud_api_key" {
 ############################################################
 # for main.tf
 variable "cluster_name" {
-    type = "string"
-    description = "lsf cluster name"
+  type = "string"
+  description = "lsf cluster name"
 }
 
 variable "domain_name" {
-    type = "string"
-    description = "domain name"
+  type = "string"
+  description = "domain name"
 }
 
 variable "data_center" {
-    type = "string"
-    description = "data center"
+  type = "string"
+  description = "data center"
 }
 
 variable "public_vlan_id" {
-    type = "string"
-    description = "public vlan id for master node"
+  type = "string"
+  description = "public vlan id for master node"
 }
 
 variable "private_vlan_id" {
-    type = "string"
-    description = "private vlan id for both master node and private node"
+  type = "string"
+  description = "private vlan id for both master node and private node"
+}
+
+variable "private_vlan_number" {
+  type = "string"
+  description = "private vlan number for both master node and slave node"
 }
 
 variable "master_cores" {
-    type = "string"
-    description = "cpu cores on master node"
+  type = "string"
+  description = "cpu cores on master node"
 }
 
 variable "master_memory" {
-    type = "string"
-    description = "memory in MBytes on master node"
+  type = "string"
+  description = "memory in MBytes on master node"
 }
 
 variable "master_disk" {
-    type = "string"
-    description = "disk size in GBytes on master node"
+  type = "string"
+  description = "disk size in GBytes on master node"
 }
 
 variable "master_network_speed" {
-    type = "string"
-    description = "network speed in Mbps on master node"
+  type = "string"
+  description = "network speed in Mbps on master node"
 }
 
 variable "slave_cores" {
-    type = "string"
-    description = "cpu cores on slave node"
+  type = "string"
+  description = "cpu cores on slave node"
 }
 
 variable "slave_memory" {
-    type = "string"
-    description = "memory in MBytes on slave node"
+  type = "string"
+  description = "memory in MBytes on slave node"
 }
 
 variable "slave_disk" {
-    type = "string"
-    description = "disk size in GBytes on slave node"
+  type = "string"
+  description = "disk size in GBytes on slave node"
 }
 
 variable "slave_network_speed" {
-    type = "string"
-    description = "network speed in Mbps on slave node"
+  type = "string"
+  description = "network speed in Mbps on slave node"
 }
 
 variable "remote_console_public_ssh_key" {
-    type = "string"
-    description = "public ssh key of remote console for control"
+  type = "string"
+  description = "public ssh key of remote console for control"
 }
 
 variable "scripts_path_uri" {
-    type = "string"
-    description = "uri of scripts folder"
-    default = "https://raw.githubusercontent.com/chenxpcn/spectrum-lsf-ibmcloud/master/scripts"
+  type = "string"
+  description = "uri of scripts folder"
+  default = "https://raw.githubusercontent.com/chenxpcn/spectrum-lsf-ibmcloud/master/scripts"
 }
 
 variable "installer_uri" {
@@ -107,5 +112,5 @@ variable "lsfadmin_password" {
 
 variable "image_name" {
   type = "string"
-  type = "image name for dynamic node"
+  description = "image name for dynamic node"
 }
