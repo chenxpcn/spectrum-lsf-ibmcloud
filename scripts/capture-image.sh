@@ -43,6 +43,7 @@ pip install virtualenv
 cd /root/installer
 virtualenv venv
 . ./venv/bin/activate
+pip install SoftLayer
 
 LOG "Call to capture the image for slave"
 python capture-image.py $SL_USER $SL_APIKEY $INSTANCE_ID "$IMAGE_NAME"
