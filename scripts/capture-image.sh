@@ -24,7 +24,7 @@ is_slave_offline() {
 }
 
 is_slave_online() {
-    LOG "echo check whether slave is online ..."
+    LOG "check whether slave is online ..."
     max_retry=60
     online='0'
     while [ $max_retry -gt 0 -a $online -eq '0' ]
