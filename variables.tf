@@ -22,11 +22,13 @@ variable "ibmcloud_api_key" {
 variable "cluster_name" {
   type = "string"
   description = "lsf cluster name"
+  default = "lsf-cluster"
 }
 
 variable "domain_name" {
   type = "string"
   description = "domain name"
+  default = "lsf.cloud"
 }
 
 variable "data_center" {
@@ -52,41 +54,49 @@ variable "private_vlan_number" {
 variable "master_cores" {
   type = "string"
   description = "cpu cores on master node"
+  default = "4"
 }
 
 variable "master_memory" {
   type = "string"
   description = "memory in MBytes on master node"
+  default = "32768"
 }
 
 variable "master_disk" {
   type = "string"
   description = "disk size in GBytes on master node"
+  default = "100"
 }
 
 variable "master_network_speed" {
   type = "string"
   description = "network speed in Mbps on master node"
+  default = "100"
 }
 
 variable "slave_cores" {
   type = "string"
   description = "cpu cores on slave node"
+  default = "2"
 }
 
 variable "slave_memory" {
   type = "string"
   description = "memory in MBytes on slave node"
+  default = "4096"
 }
 
 variable "slave_disk" {
   type = "string"
   description = "disk size in GBytes on slave node"
+  default = "25"
 }
 
 variable "slave_network_speed" {
   type = "string"
   description = "network speed in Mbps on slave node"
+  default = "100"
 }
 
 variable "remote_console_public_ssh_key" {
@@ -113,4 +123,5 @@ variable "lsfadmin_password" {
 variable "image_name" {
   type = "string"
   description = "image name for dynamic node"
+  default = "LSFDynamicNodeImage"
 }
