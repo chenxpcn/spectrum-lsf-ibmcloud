@@ -13,11 +13,22 @@ def main(params):
             image_name = str(params[3])
 
             client = SoftLayer.create_client_from_env(username=sl_user, api_key=sl_apikey)
-            mgr = SoftLayer.VSManager(client)
 
-            image_info = mgr.capture(instance_id, image_name)
+            # check if image with image_name exist or not
+            # if exist, remove it
+            imageManager = SoftLayer.ImageManager(client)
+            image_list = mgr.list_private_images(name=image_name)
+            for image in image_list:
+                info = mgr.get_image(image['id'])
+                print("found image with " + image_name + ", delete it")
+                print(info)
+                info = mgr.delete_image(image['id'])
 
+            # create transaction to capture the image
+            vsManager = SoftLayer.VSManager(client)
+            image_info = vsManager.capture(instance_id, image_name)
             print(image_info)
+            
     except Exception:
         print(traceback.format_exc())
 
