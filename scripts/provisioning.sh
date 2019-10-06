@@ -41,7 +41,7 @@ sed -i '$ a LSF_LOCAL_RESOURCES=\"[resource softlayerhost]\" '  $LSF_CONF_FILE
 ###Disable ego in the slave host
 #sed -i "s/LSF_ENABLE_EGO=Y/LSF_ENABLE_EGO=N/" $LSF_CONF_FILE
 ###if ego enabled need to create a soft link
-ln -s /opt/ibm/lsfsuite/lsf/conf/ego/lsf-demo1/kernel/ego.conf /etc/ego.conf
+ln -s /opt/ibm/lsfsuite/lsf/conf/ego/[CLUSTER-NAME]/kernel/ego.conf /etc/ego.conf
 
 #Do not remove this part of the script to support rc_account resource for SoftLayer
 #You can similarly set additional local resources if needed

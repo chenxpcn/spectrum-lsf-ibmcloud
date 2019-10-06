@@ -23,6 +23,7 @@ LOG "RC configuration directory is $LSF_ENVDIR/resource_connector/softlayer/conf
 
 LOG "Set provioning.sh"
 sed -i 's/\[MASTER-IP-ADDRESS\]/'$MASTER_IP_ADDR'/' /var/www/html/provisioning.sh
+sed -i 's/\[CLUSTER-NAME\]/'$CLUSTER_NAME'/' /var/www/html/provisioning.sh
 
 LOG "Modify $LSF_ENVDIR/lsf.cluster.$CLUSTER_NAME"
 sed -i '/Begin Parameters/a\LSF_HOST_ADDR_RANGE=*.*.*.*' $LSF_ENVDIR/lsf.cluster.$CLUSTER_NAME

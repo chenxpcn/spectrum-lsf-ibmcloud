@@ -183,7 +183,7 @@ resource "null_resource" "config_slave" {
     inline  = [
       "mkdir -p /root/installer",
       "wget -nv -nH -c --no-check-certificate -O /root/installer/config-lsf-slave.sh ${var.scripts_path_uri}/config-lsf-slave.sh",
-      ". /root/installer/config-lsf-slave.sh"
+      ". /root/installer/config-lsf-slave.sh ${var.cluster_name}"
     ]
   }
 
