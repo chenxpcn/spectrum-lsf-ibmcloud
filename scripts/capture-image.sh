@@ -38,15 +38,15 @@ is_slave_online() {
 LOG "Start to capture the image for slave"
 
 LOG "Install and config python running environment"
-easy_install pip
-pip install virtualenv
+easy_install pip >> "$LOG_FILE"
+pip install virtualenv >> "$LOG_FILE"
 cd /root/installer
 virtualenv venv
 . ./venv/bin/activate
-pip install SoftLayer
+pip install SoftLayer >> "$LOG_FILE"
 
 LOG "Call to capture the image for slave"
-python capture-image.py $SL_USER $SL_APIKEY $INSTANCE_ID "$IMAGE_NAME"
+python capture-image.py $SL_USER $SL_APIKEY $INSTANCE_ID "$IMAGE_NAME" >> "$LOG_FILE"
 
 LOG "Check whether capture transaction is completed or not"
 is_slave_offline
