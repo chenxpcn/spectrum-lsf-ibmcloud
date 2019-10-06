@@ -17,18 +17,18 @@ def main(params):
             # check if image with image_name exist or not
             # if exist, remove it
             imageManager = SoftLayer.ImageManager(client)
-            image_list = mgr.list_private_images(name=image_name)
+            image_list = imageManager.list_private_images(name=image_name)
             for image in image_list:
-                info = mgr.get_image(image['id'])
+                info = imageManager.get_image(image['id'])
                 print("found image with " + image_name + ", delete it")
                 print(info)
-                info = mgr.delete_image(image['id'])
+                info = imageManager.delete_image(image['id'])
 
             # create transaction to capture the image
             vsManager = SoftLayer.VSManager(client)
             image_info = vsManager.capture(instance_id, image_name)
             print(image_info)
-            
+
     except Exception:
         print(traceback.format_exc())
 
