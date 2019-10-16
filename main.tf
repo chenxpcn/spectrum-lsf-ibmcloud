@@ -1,17 +1,23 @@
 locals {
+  local_ssh_key_file_name = "local-ssh-key"
   master_ssh_key_file_name = "lsf-master-ssh-key"
   slave_ssh_key_file_name = "lsf-slave-ssh-key"
 }
 
 resource "null_resource" "create_local_ssh_key" {
   provisioner "local-exec" {
-    command = "if [ ! -f '~/.ssh/id_rsa.pub' ]; then ssh-keygen -N ''; fi"
+    command = "if [ ! -f '${local.local_ssh_key_file_name}' ]; then ssh-keygen -f ${local.local_ssh_key_file_name} -N ''; fi"
   }
 }
 
 resource "ibm_compute_ssh_key" "local_ssh_key" {
   label      = "local_ssh_key"
   public_key = "${file("~/.ssh/id_rsa.pub")}"
+  depends_on = ["null_resource.create_local_ssh_key"]
+}
+
+data "local_file" "local_ssh_private_key" {
+  filename = "${local.local_ssh_key_file_name}"
   depends_on = ["null_resource.create_local_ssh_key"]
 }
 
@@ -32,7 +38,7 @@ resource "null_resource" "copy_master_private_key" {
     type        = "ssh"
     user        = "root"
     host        = "${ibm_compute_vm_instance.lsf-master.ipv4_address}"
-    private_key = "${file("~/.ssh/id_rsa")}"
+    private_key = "${data.local_file.local_ssh_private_key.content}"
   }
 
   provisioner "file" {
@@ -68,7 +74,7 @@ resource "null_resource" "copy_slave_private_key" {
     type        = "ssh"
     user        = "root"
     host        = "${ibm_compute_vm_instance.lsf-slave.ipv4_address}"
-    private_key = "${file("~/.ssh/id_rsa")}"
+    private_key = "${data.local_file.local_ssh_private_key.content}"
   }
 
   provisioner "file" {
@@ -142,7 +148,7 @@ resource "null_resource" "set_slave_hosts_file" {
     type        = "ssh"
     user        = "root"
     host        = "${ibm_compute_vm_instance.lsf-slave.ipv4_address}"
-    private_key = "${file("~/.ssh/id_rsa")}"
+    private_key = "${data.local_file.local_ssh_private_key.content}"
   }
 
   provisioner "remote-exec" {
@@ -159,7 +165,7 @@ resource "null_resource" "install_lsf" {
     type        = "ssh"
     user        = "root"
     host        = "${ibm_compute_vm_instance.lsf-master.ipv4_address}"
-    private_key = "${file("~/.ssh/id_rsa")}"
+    private_key = "${data.local_file.local_ssh_private_key.content}"
   }
 
   provisioner "remote-exec" {
@@ -183,7 +189,7 @@ resource "null_resource" "config_slave" {
     type        = "ssh"
     user        = "root"
     host        = "${ibm_compute_vm_instance.lsf-slave.ipv4_address}"
-    private_key = "${file("~/.ssh/id_rsa")}"
+    private_key = "${data.local_file.local_ssh_private_key.content}"
   }
 
   provisioner "remote-exec" {
@@ -202,7 +208,7 @@ resource "null_resource" "config_master" {
     type        = "ssh"
     user        = "root"
     host        = "${ibm_compute_vm_instance.lsf-master.ipv4_address}"
-    private_key = "${file("~/.ssh/id_rsa")}"
+    private_key = "${data.local_file.local_ssh_private_key.content}"
   }
 
   provisioner "remote-exec" {
