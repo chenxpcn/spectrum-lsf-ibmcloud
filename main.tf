@@ -10,14 +10,19 @@ resource "null_resource" "create_local_ssh_key" {
   }
 }
 
-resource "ibm_compute_ssh_key" "local_ssh_key" {
-  label      = "local_ssh_key"
-  public_key = "${file("~/.ssh/id_rsa.pub")}"
+data "local_file" "local_ssh_public_key" {
+  filename = "${local.local_ssh_key_file_name}.pub"
   depends_on = ["null_resource.create_local_ssh_key"]
 }
 
 data "local_file" "local_ssh_private_key" {
   filename = "${local.local_ssh_key_file_name}"
+  depends_on = ["null_resource.create_local_ssh_key"]
+}
+
+resource "ibm_compute_ssh_key" "local_ssh_key" {
+  label      = "local_ssh_key"
+  public_key = "${data.local_file.local_ssh_public_key.content}"
   depends_on = ["null_resource.create_local_ssh_key"]
 }
 
