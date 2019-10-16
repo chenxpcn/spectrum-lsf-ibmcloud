@@ -23,6 +23,11 @@ Once the slave node is full, the Resource Connector will request a new Virtual S
 3. Fill **Workspace name** with a name for the workspace 
 4. Fill **GitHub or GitLab repository URL** with the URL of this template Git repository, say https://github.com/chenxpcn/spectrum-lsf-ibmcloud
 5. Click button **Retrieve input variables**, fill values for variables.  Refrence following table for the detail information about variables.
+6. Click button **Create** at right side of the page.
+
+To create a HPC cluster with this workspace 
+1. Click button **Generate plan**, check **Recent activity** list, wait the generation action complete, either **Plan generated** for success or **Failed to generate plan** for failed, click **View log** for detail log.
+2. Click button **Apply plan**, check **Recent activity** list, wait the apply action complete, either **Plan applied** for success or **Failed to apply plan** for failed, click **View log** for detail log.
 
 ### Create an environment with Terraform Binary on your local workstation
 1. Install the Terraform, to apply this template, you need to install the latest update of Terraform v0.11 (**Do not install v0.12**), you can download Terraform v0.11 package from [here](https://releases.hashicorp.com/terraform/)
@@ -38,6 +43,7 @@ Once the slave node is full, the Resource Connector will request a new Virtual S
 To run this project locally:
 
 1. Set values for variables in `terraform.tfvars`
+2. Switch to the project folder in terminal, run `terraform init`.  Terraform performs initialization on the local environment.
 2. Run `terraform plan`. Terraform performs a dry run to show what resources will be created.
 3. Run `terraform apply`. Terraform creates and deploys resources to your environment.
     * You can see deployed infrastructure in [IBM Cloud Console](https://cloud.ibm.com/classic/devices).
