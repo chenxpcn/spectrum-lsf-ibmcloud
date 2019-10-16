@@ -3,9 +3,16 @@ locals {
   slave_ssh_key_file_name = "lsf-slave-ssh-key"
 }
 
+resource "null_resource" "create_local_ssh_key" {
+  provisioner "local-exec" {
+    command = "if [ ! -f '~/.ssh/id_rsa.pub' ]; then ssh-keygen -N ''; fi"
+  }
+}
+
 resource "ibm_compute_ssh_key" "local_ssh_key" {
   label      = "local_ssh_key"
   public_key = "${file("~/.ssh/id_rsa.pub")}"
+  depends_on = ["null_resource.create_local_ssh_key"]
 }
 
 resource "null_resource" "create_master_ssh_key" {
