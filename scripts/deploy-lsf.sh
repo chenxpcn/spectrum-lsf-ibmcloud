@@ -53,7 +53,7 @@ fi
 LOG "Install LSF"
 ansible-playbook -i lsf-inventory lsf-deploy.yml>/root/logs/lsf-deploy.log
 result=`cat /root/logs/lsf-deploy.log|grep 'failed='|sed -n 's/^.*failed=//;p'|grep '[1-9]'`
-if [ ! -z "$result" ]
+if [ -z "$result" ]
 then
     LOG "Install LSF successfully, please check /root/logs/lsf-deploy.log for detail."
 else
