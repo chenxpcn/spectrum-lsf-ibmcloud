@@ -13,8 +13,8 @@ LOG "Start to download deployer ..."
 
 mkdir -p /root/installer
 
-LOG "wget -nH -c --no-check-certificate -o $LOG_FILE -O /root/installer/lsfsent-x86_64.bin $INSTALL_PACKAGE_URI"
-wget -nv -nH -c --no-check-certificate -o $LOG_FILE -O /root/installer/lsfsent-x86_64.bin $INSTALL_PACKAGE_URI
+LOG "Get $INSTALL_PACKAGE_URI"
+wget -nv -nH -c --no-check-certificate -o $LOG_FILE -O /root/installer/lsfsent-x86_64.bin $INSTALL_PACKAGE_URI || exit 1
 
 echo "1" > "/root/installer/select_yes"
 
@@ -33,16 +33,20 @@ sed -i '/\[LSF_Servers\]/a\lsf-slave' lsf-inventory
 LOG "Perform pre-install checking"
 ansible-playbook -i lsf-inventory lsf-config-test.yml>/root/logs/lsf-config-test.log
 result=`cat /root/logs/lsf-config-test.log|grep 'failed='|sed -n 's/^.*failed=//;p'|grep '[1-9]'`
-if [ ! -z "$result" ]
+if [ -z "$result" ]
 then
-    LOG "Found error in config test, please check /root/logs/lsf-config-test.log"
+    LOG "Config test passed, please check /root/logs/lsf-config-test.log for detail."
+else
+    LOG "Found error in config test, please check /root/logs/lsf-config-test.log for detail."
     exit -1
 fi
 ansible-playbook -i lsf-inventory lsf-predeploy-test.yml>/root/logs/lsf-predeploy-test.log
 result=`cat /root/logs/lsf-predeploy-test.log|grep 'failed='|sed -n 's/^.*failed=//;p'|grep '[1-9]'`
-if [ ! -z "$result" ]
+if [ -z "$result" ]
 then
-    LOG "Found error in pre-deploy test, please check /root/logs/lsf-predeploy-test.log"
+    LOG "Pre-deploy test passed, please check /root/logs/lsf-predeploy-test.log for detail."
+else
+    LOG "Found error in pre-deploy test, please check /root/logs/lsf-predeploy-test.log for detail."
     exit -1
 fi
 
@@ -51,7 +55,9 @@ ansible-playbook -i lsf-inventory lsf-deploy.yml>/root/logs/lsf-deploy.log
 result=`cat /root/logs/lsf-deploy.log|grep 'failed='|sed -n 's/^.*failed=//;p'|grep '[1-9]'`
 if [ ! -z "$result" ]
 then
-    LOG "Found error in deploy, please check /root/logs/lsf-deploy.log"
+    LOG "Install LSF successfully, please check /root/logs/lsf-deploy.log for detail."
+else
+    LOG "Found error in deploy, please check /root/logs/lsf-deploy.log for detail."
     exit -1
 fi
 

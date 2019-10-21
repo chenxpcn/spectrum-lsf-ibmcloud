@@ -12,7 +12,7 @@ LOG()
 }
 
 is_slave_offline() {
-    LOG "check whether slave is offline ..."
+    LOG "Check whether slave is offline ..."
     max_retry=30
     online='1'
     while [ $max_retry -gt 0 -a $online -eq '1' ]
@@ -24,7 +24,7 @@ is_slave_offline() {
 }
 
 is_slave_online() {
-    LOG "check whether slave is online ..."
+    LOG "Check whether slave is online ..."
     max_retry=60
     online='0'
     while [ $max_retry -gt 0 -a $online -eq '0' ]
@@ -35,9 +35,9 @@ is_slave_online() {
     done
 }
 
-LOG "Start to capture the image for slave"
+LOG "Start to capture the image for slave."
 
-LOG "Install and config python running environment"
+LOG "Install and config python running environment."
 easy_install pip >> "$LOG_FILE"
 pip install virtualenv >> "$LOG_FILE"
 cd /root/installer
@@ -47,19 +47,22 @@ pip install SoftLayer >> "$LOG_FILE"
 
 LOG "Call to capture the image for slave"
 python capture-image.py $SL_USER $SL_APIKEY $INSTANCE_ID "$IMAGE_NAME" >> "$LOG_FILE"
+deactivate
 
-LOG "Check whether capture transaction is completed or not"
+LOG "Check whether capture transaction is completed or not."
 is_slave_offline
 if [ $online -eq '0' ]
 then
-    LOG "slave is offline"
+    LOG "Slave is offline."
     is_slave_online
     if [ $online -eq '1' ]
     then
-        LOG "slave is online again, capture transaction complete."
+        LOG "Slave is online again, capture transaction complete."
+    else
+        LOG "Slave is still offline in 10 minutes, please check whether capture image succeed or not manually."
     fi
+else
+    LOG "Slave is still online in 5 minutes, please check whether capture image succeed or not manually."
 fi
-
-deactivate
 
 LOG "Capture the image for slave complete."

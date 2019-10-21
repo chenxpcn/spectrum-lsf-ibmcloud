@@ -201,7 +201,8 @@ resource "null_resource" "config_slave" {
     inline  = [
       "mkdir -p /root/installer",
       "wget -nv -nH -c --no-check-certificate -O /root/installer/config-lsf-slave.sh ${var.scripts_path_uri}/config-lsf-slave.sh",
-      ". /root/installer/config-lsf-slave.sh ${var.cluster_name}"
+      ". /root/installer/config-lsf-slave.sh ${var.cluster_name}",
+      "sed -i -e '2d' /root/.ssh/authorized_keys"
     ]
   }
 
@@ -219,10 +220,12 @@ resource "null_resource" "config_master" {
   provisioner "remote-exec" {
     inline  = [
       ". /root/installer/config-lsf-master.sh ${var.cluster_name} ${var.iaas_username} ${var.ibmcloud_iaas_api_key} ${var.scripts_path_uri} ${ibm_compute_vm_instance.lsf-master.ipv4_address_private} ${var.slave_cores} ${var.slave_memory} ${var.image_name} ${var.data_center} ${var.private_vlan_number}",
-      ". /root/installer/capture-image.sh ${var.iaas_username} ${var.ibmcloud_iaas_api_key} ${ibm_compute_vm_instance.lsf-slave.id} ${var.image_name} ${ibm_compute_vm_instance.lsf-slave.ipv4_address_private}"
+      ". /root/installer/capture-image.sh ${var.iaas_username} ${var.ibmcloud_iaas_api_key} ${ibm_compute_vm_instance.lsf-slave.id} ${var.image_name} ${ibm_compute_vm_instance.lsf-slave.ipv4_address_private}",
+      "sed -i -e '2d' /root/.ssh/authorized_keys"
     ]
   }
 
   depends_on = ["null_resource.install_lsf", "null_resource.config_slave"]
 }
+
 
